@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.*;
 
 import com.didisoft.pgp.*;
-import lw.bouncycastle.openpgp.PGPException;
+import org.bouncycastle.openpgp.PGPException;
 import org.apache.commons.io.FileUtils;
 
 public class EncryptFile {
@@ -21,11 +21,16 @@ public class EncryptFile {
         // set to false for compatibility with older versions of PGP such as 6.5.8.
         boolean withIntegrityCheck = false;
                 
-        pgp.encryptFile("/files/"+fileName, 
-        				"/keys/ID_Analytics_PGP_Public_Key.asc", 
-        				"/files/"+fileName+".pgp", 
-        				asciiArmor, 
-        				withIntegrityCheck);
+        try {
+			pgp.encryptFile("/files/"+fileName, 
+							"/keys/ID_Analytics_PGP_Public_Key.asc", 
+							"/files/"+fileName+".pgp", 
+							asciiArmor, 
+							withIntegrityCheck);
+		} catch (com.didisoft.pgp.PGPException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void writeToFile(String fileName, String body) throws IOException{

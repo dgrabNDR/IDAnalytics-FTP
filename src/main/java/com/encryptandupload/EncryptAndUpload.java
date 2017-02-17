@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
+import org.bouncycastle.openpgp.PGPException;
 
-import lw.bouncycastle.openpgp.PGPException;
+import com.didisoft.pgp.*;
+
 import main.java.com.salesforce.*;
 
 import com.google.gson.Gson;
@@ -47,13 +49,14 @@ public class EncryptAndUpload extends HttpServlet{
 		ArrayList<SObject> encrypted = new ArrayList<SObject>();		
 		// encrypt files
 		for(SObject so : attachments){			
+			EncryptFile.writeToFile((String)so.getField("Name"), (String)so.getField("Body"));
 			try {
-				EncryptFile.writeToFile((String)so.getField("Name"), (String)so.getField("Body"));
 				EncryptFile.encrypt((String)so.getField("Name"));
-				EncryptFile.getFile((String)so.getField("Name"));
 			} catch (PGPException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}			
+			}
+			EncryptFile.getFile((String)so.getField("Name"));			
 		}
 		
 		// upload files to ftp
