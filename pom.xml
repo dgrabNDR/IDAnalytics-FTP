@@ -97,11 +97,6 @@
         <version>5.5.0</version>
     </dependency>
     <dependency>
-        <groupId>lw.bouncycastle.openpgp</groupId>
-        <artifactId>bcpg-lw-jdk15on-1.56</artifactId>
-        <version>1.5.6</version>
-    </dependency>
-    <dependency>
         <groupId>org.didisoft.pgp</groupId>
         <artifactId>pgplib-3.1.2</artifactId>
         <version>3.1.2</version>
