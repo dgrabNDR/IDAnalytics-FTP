@@ -32,8 +32,8 @@ import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 
 public class SalesforceConnector {
-	private static final String CLIENTID ="3MVG9yZ.WNe6byQBrEHW_cRm._dp_BF.2h1xhv1.qUNdo9mllhb6wLTwiF1e5vhIH1eu9Ojvl0UiD6Y62FGr6";
-	private static final String CLIENT_SECRET = "7740176649279426585";
+	private static final String CLIENTID ="3MVG9yZ.WNe6byQBrEHW_cRm._WbzrhwX7sW1gimi25mUrZSlV9IpvMMVs4Y51dAEyro5MmJng.25A3LEF14O";
+	private static final String CLIENT_SECRET = "6782505781914341236";
 	private static String ENV;
 	private static String username;
 	private static String password; 
