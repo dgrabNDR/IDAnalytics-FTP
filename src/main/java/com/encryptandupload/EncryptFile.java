@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 
 public class EncryptFile {
 	public static void encrypt(String fileName) throws PGPException, IOException{
+		/*
 		// create an instance of the library
 		PGPLib pgp = new PGPLib();
 		
@@ -31,6 +32,7 @@ public class EncryptFile {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 	}
 	
 	public static void writeToFile(String fileName, String body) throws IOException{
@@ -98,6 +100,7 @@ public class EncryptFile {
                       e.printStackTrace();
               }
               return null;
+	      
       }
       
       private static void _encrypt(String fileName, OutputStream out, PGPPublicKey encKey) throws IOException, NoSuchProviderException, PGPException {
