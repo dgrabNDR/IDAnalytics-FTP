@@ -1,1 +1,1 @@
-web:  java $JAVA_OPTS -cp target/classes:target/dependency/* target.classes.encryptandupload.Main
+web:  java $JAVA_OPTS -cp target/classes:target/dependency/* com.encryptandupload.Main
