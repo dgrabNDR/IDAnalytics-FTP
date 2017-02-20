@@ -52,6 +52,7 @@ public class SalesforceConnector {
 		OAuthResponse oauthres = new OAuthResponse();
 		String res = "";
 		CloseableHttpClient httpclient = HttpClients.createDefault();
+		System.out.println("https://"+ENV+".salesforce.com/services/oauth2/token");
 		HttpPost httpPost = new HttpPost("https://"+ENV+".salesforce.com/services/oauth2/token");
 		List <NameValuePair> nvps = new ArrayList <NameValuePair>();
 		nvps.add(new BasicNameValuePair("grant_type", "password"));
