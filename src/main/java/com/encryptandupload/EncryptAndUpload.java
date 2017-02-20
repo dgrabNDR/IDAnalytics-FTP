@@ -74,7 +74,7 @@ public class EncryptAndUpload extends HttpServlet{
 	
 	private ArrayList<SObject> query(String ids) throws ConnectionException{
 		String idFilter;
-		if(ids.indexOf(",") > -1){
+		if(ids..contains(",")){
 			String[] idParts = ids.split(",");
 			idFilter = " Id IN(";
 			for(String attId : idParts){
