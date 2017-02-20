@@ -48,6 +48,7 @@ public class EncryptAndUpload extends HttpServlet{
 		
 		ArrayList<SObject> encrypted = new ArrayList<SObject>();		
 		// encrypt files
+	    /*
 		for(SObject so : attachments){			
 			EncryptFile.writeToFile((String)so.getField("Name"), (String)so.getField("Body"));
 			try {
@@ -58,7 +59,7 @@ public class EncryptAndUpload extends HttpServlet{
 			}
 			EncryptFile.getFile((String)so.getField("Name"));			
 		}
-		
+		*/
 		// upload files to ftp
 		//UploadFile.start(params, attachments);
 	}
