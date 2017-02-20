@@ -76,15 +76,10 @@
         	<version>1.0</version>
         </dependency>
         <dependency>
-		<groupId>org.bouncycastle.openpgp</groupId>
+		<groupId>org.bouncycastle.openpgp.1.50</groupId>
 		<artifactId>bcprov-jdk15on-1.50</artifactId>
 		<version>1.50</version>
-    	</dependency>
-	<dependency>
-		<groupId>org.bouncycastle</groupId>
-		<artifactId>bcpkix-jdk15on</artifactId>
-		<version>1.50</version>
-	</dependency>        
+    	</dependency>     
 	<dependency>                    
 		<groupId>com.itextpdf.tool</groupId>
 		<artifactId>xmlworker</artifactId>
