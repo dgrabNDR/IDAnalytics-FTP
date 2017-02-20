@@ -10,7 +10,7 @@ import org.bouncycastle.openpgp.*;
 import org.apache.commons.io.FileUtils;
 
 public class EncryptFile {
-	public static void encrypt(String fileName) throws PGPException, IOException{
+	public static void encrypt(String fileName) throws /*PGPException,*/ IOException{
 		/*
 		// create an instance of the library
 		PGPLib pgp = new PGPLib();
