@@ -76,7 +76,7 @@
         	<version>1.0</version>
         </dependency>
         <dependency>
-		<groupId>org.bouncycastle.openpgp.1.50</groupId>
+		<groupId>org.bouncycastle.openpgp</groupId>
 		<artifactId>bcprov-jdk15on-1.50</artifactId>
 		<version>1.50</version>
     	</dependency>     
