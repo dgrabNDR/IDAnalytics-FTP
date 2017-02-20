@@ -60,7 +60,9 @@ public class SalesforceConnector {
 		nvps.add(new BasicNameValuePair("client_secret", CLIENT_SECRET));
 		nvps.add(new BasicNameValuePair("username", username));
 		nvps.add(new BasicNameValuePair("password", password));
+		System.out.println("nvps: "+nvps);
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+		System.out.println("httpPost: "+httpPost);
 		CloseableHttpResponse response = httpclient.execute(httpPost);
 
 		try {
