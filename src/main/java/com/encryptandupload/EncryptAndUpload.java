@@ -77,7 +77,7 @@ public class EncryptAndUpload extends HttpServlet{
 		if(ids.indexOf(",") > -1){
 			idParts = ids.split(",");
 		} else {
-			idParts = new String[](ids);
+			idParts = new String[1]{ids};
 		}
 		String idFilter = " Id IN(";
 
