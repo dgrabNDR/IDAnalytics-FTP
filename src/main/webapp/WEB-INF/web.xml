@@ -11,7 +11,7 @@
     
   <servlet>
     <servlet-name>encryptandupload</servlet-name>
-    <servlet-class>com.uploader.EncryptAndUpload</servlet-class>
+    <servlet-class>main.java.com.encryptandupload.EncryptAndUpload</servlet-class>
   </servlet>
 
   <servlet-mapping>
