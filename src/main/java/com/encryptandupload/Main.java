@@ -3,6 +3,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 public class Main {
+	System.out.println("running main class...");
 	public static void main(String[] args) throws Exception {
 		String webappDirLocation = "src/main/webapp/";
         
