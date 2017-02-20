@@ -12,12 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
-import org.bouncycastle.bcprov-jdk15on.openpgp.*;
 
-//import com.didisoft.pgp.*;
 
 import main.java.com.salesforce.*;
-
+import org.bouncycastle.bcprov-jdk15on.openpgp.*;
 import com.google.gson.Gson;
 import com.sforce.soap.partner.sobject.SObject;
 import com.sforce.ws.ConnectionException;
