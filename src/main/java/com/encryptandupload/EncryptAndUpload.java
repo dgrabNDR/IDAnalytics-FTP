@@ -73,30 +73,24 @@ public class EncryptAndUpload extends HttpServlet{
 	}
 	
 	private ArrayList<SObject> query(String ids) throws ConnectionException{
-		String[] idParts;
+		String idFilter;
 		if(ids.indexOf(",") > -1){
-			idParts = ids.split(",");
-		} else {
-			idParts = new String[1]{ids};
-		}
-		String idFilter = " Id IN(";
-
-		for(String attId : idParts){
-			if(idFilter == " Id IN("){
-				idFilter = idFilter + "'" + attId + "'";
-			}else {
-				idFilter = idFilter + ",'" + attId + "'";
+			String[] idParts = ids.split(",");
+			idFilter = " Id IN(";
+			for(String attId : idParts){
+				if(idFilter == " Id IN("){
+					idFilter = idFilter + "'" + attId + "'";
+				}else {
+					idFilter = idFilter + ",'" + attId + "'";
+				}
 			}
+			idFilter = idFilter + ")";
+		} else {
+			idFilter = " Id = "+ids;
 		}
-		idFilter = idFilter + ")";
-
 		System.out.println("idFilter: "+ idFilter);
 
 		String soql = "SELECT Id, Name, ParentId, Body FROM Attachment WHERE "+idFilter;
 		return sc.query(soql);
 	}
-	
-	
-	
-	
 }
