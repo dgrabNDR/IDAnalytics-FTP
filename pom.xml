@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.example</groupId>
     <version>1.0-SNAPSHOT</version>
-    <name>helloworld</name>
-    <artifactId>helloworld</artifactId>
+    <name>EncryptAndUpload</name>
+    <artifactId>EncryptAndUpload</artifactId>
     <packaging>jar</packaging>
 
     <properties>
