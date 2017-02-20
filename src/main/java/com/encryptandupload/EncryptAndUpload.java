@@ -86,7 +86,7 @@ public class EncryptAndUpload extends HttpServlet{
 			}
 			idFilter = idFilter + ")";
 		} else {
-			idFilter = " Id = "+ids;
+			idFilter = " Id = '"+ids+"'";
 		}
 		System.out.println("idFilter: "+ idFilter);
 
