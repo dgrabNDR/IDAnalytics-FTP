@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.*;
 
 //import com.didisoft.pgp.*;
-import org.bouncycastle.openpgp.*;
+import org.bouncycastle.*;
 import org.apache.commons.io.FileUtils;
 
 public class EncryptFile {
