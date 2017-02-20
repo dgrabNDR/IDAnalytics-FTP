@@ -73,7 +73,12 @@ public class EncryptAndUpload extends HttpServlet{
 	}
 	
 	private ArrayList<SObject> query(String ids) throws ConnectionException{
-		String[] idParts = ids.split(",");
+		String[] idParts;
+		if(ids.indexOf(",") > -1){
+			idParts = ids.split(",");
+		} else {
+			idParts.add(ids);
+		}
 		String idFilter = " Id IN(";
 
 		for(String attId : idParts){
