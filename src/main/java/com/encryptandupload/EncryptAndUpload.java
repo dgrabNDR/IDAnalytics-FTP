@@ -15,7 +15,7 @@ import org.apache.commons.codec.binary.Base64;
 
 
 import main.java.com.salesforce.*;
-import org.bouncycastle.bcprov-jdk15on.openpgp.*;
+import org.bouncycastle.*;
 import com.google.gson.Gson;
 import com.sforce.soap.partner.sobject.SObject;
 import com.sforce.ws.ConnectionException;
