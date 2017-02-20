@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
-import org.bouncycastle.openpgp.PGPException;
+import org.bouncycastle.bcprov-jdk15on.openpgp.PGPException;
 
 //import com.didisoft.pgp.*;
 
