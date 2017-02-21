@@ -77,14 +77,9 @@
         </dependency>
         <dependency>
 	    <groupId>org.bouncycastle</groupId>
-	    <artifactId>bcprov-jdk15on</artifactId>
-	    <version>1.54</version>
-	</dependency>
-	<dependency>
-		<groupId>org.bouncycastle</groupId>
-		<artifactId>bcpg-jdk16</artifactId>
-		<version>1.46</version>
-    	</dependency>     
+	    <artifactId>bcpg-jdk14</artifactId>
+	    <version>1.48</version>
+	</dependency>   
 	<dependency>                    
 		<groupId>com.itextpdf.tool</groupId>
 		<artifactId>xmlworker</artifactId>
