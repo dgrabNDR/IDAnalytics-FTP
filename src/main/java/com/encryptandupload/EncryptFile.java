@@ -56,29 +56,7 @@ public class EncryptFile {
               // ----- Read in the public key
               File theFile = new File("/app/./src/main/java/com/encryptandupload/keys/ID_Analytics_PGP_Public_Key.asc");
         	  System.out.println("file: "+theFile);
-        	  FileInputStream fis = null;
-        	  try {
-      			fis = new FileInputStream(theFile);
-
-      			System.out.println("Total file size to read (in bytes) : "
-      					+ fis.available());
-
-      			int content;
-      			while ((content = fis.read()) != -1) {
-      				// convert to char and display it
-      				System.out.print((char) content);
-      			}
-
-      		} catch (IOException e) {
-      			e.printStackTrace();
-      		} finally {
-			try {
-				if (fis != null)
-					fis.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
+        	  FileInputStream fis = new FileInputStream(theFile);
 	      System.out.println("fis: "+fis);
 	      PGPPublicKey key = readPublicKeyFromCol(fis);
               System.out.println("key: "+key);
