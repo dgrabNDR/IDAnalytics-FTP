@@ -64,7 +64,7 @@ public class SalesforceConnector {
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
 		System.out.println("httpPost: "+httpPost);
 		CloseableHttpResponse response = httpclient.execute(httpPost);
-
+		System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
 		try {
 			System.out.println(response.getStatusLine());
 			HttpEntity entity = response.getEntity();
