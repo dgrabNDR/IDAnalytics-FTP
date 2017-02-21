@@ -42,7 +42,7 @@ public class EncryptFile {
 		if(filesList != null){
 			for(File f : filesList){
 		    if(f.isDirectory())
-			System.out.println(f.getName()+"/");
+			System.out.println(f.getAbsolutePath());
 			EncryptFile.getAllFiles(f);
 		    if(f.isFile()){
 			System.out.println(f.getName());
