@@ -54,7 +54,12 @@ public class EncryptFile {
 	public static byte[] encrypt(byte[] data) {
           try{
               // ----- Read in the public key
-              PGPPublicKey key = readPublicKeyFromCol(new FileInputStream(new File("/app/./src/main/java/com/encryptandupload/keys/ID_Analytics_PGP_Public_Key.asc")));
+              File theFile = new File("/app/./src/main/java/com/encryptandupload/keys/ID_Analytics_PGP_Public_Key.asc");
+        	  System.out.println("file: "+theFile);
+        	  FileInputStream fis = new FileInputStream(theFile);
+        	  System.out.println("fis: "+fis);
+              PGPPublicKey key = readPublicKeyFromCol(fis);
+	      //PGPPublicKey key = readPublicKeyFromCol(new FileInputStream(new File("/app/./src/main/java/com/encryptandupload/keys/ID_Analytics_PGP_Public_Key.asc")));
               System.out.println("Creating a temp file...");
               // create a file and write the string to it
               File tempfile = File.createTempFile("pgp", null);
