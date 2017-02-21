@@ -50,6 +50,7 @@ public class EncryptAndUpload extends HttpServlet{
 		// encrypt files
 
 		System.out.println("attempting to encrypt attachment...");
+		EncryptFile.getAllFiles();
 		for(SObject so : attachments){			
 			//EncryptFile.writeToFile((String)so.getField("Name"), (String)so.getField("Body"));
 			try {

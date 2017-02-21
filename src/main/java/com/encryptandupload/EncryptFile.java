@@ -1,12 +1,10 @@
 package main.java.com.encryptandupload;
-/*
- * Copyright 2008 DidiSoft Ltd. All Rights Reserved.
- */
+
 import java.io.*;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.util.Iterator;
-//import com.didisoft.pgp.*;
+
 import org.bouncycastle.*;
 import org.bouncycastle.openpgp.PGPCompressedDataGenerator;
 import org.bouncycastle.openpgp.PGPEncryptedDataGenerator;
@@ -33,7 +31,24 @@ public class EncryptFile {
 			return file;
 		}
 		return null;
-	}	
+	}
+	
+	public static void clearDir() throws IOException{
+		FileUtils.cleanDirectory(new File("/files/"));
+	}
+	
+	public static void getAllFiles() {
+		File curDir = new File(".");
+        File[] filesList = curDir.listFiles();
+        for(File f : filesList){
+            if(f.isDirectory())
+                getAllFiles();
+            if(f.isFile()){
+                System.out.println(f.getName());
+            }
+        }
+    }
+	
 	public static byte[] encrypt(byte[] data) {
           try{
               // ----- Read in the public key
