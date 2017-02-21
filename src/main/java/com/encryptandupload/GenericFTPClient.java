@@ -3,9 +3,11 @@ package main.java.com.encryptandupload;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketException;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.TrustManager;
+
 import java.security.cert.X509Certificate;
 import java.security.cert.CertificateException;
 
@@ -50,6 +52,7 @@ public class GenericFTPClient {
 	}
 	
 	public boolean connect(String host, String login, String password, int port) throws SocketException, IOException{
+		System.out.println("host: "+host+"login: "+login+"pass: "+password+"port: "+port);
 		ftp.connect(host);
 		int reply = ftp.getReplyCode();
 		Boolean res = FTPReply.isPositiveCompletion(reply) && ftp.login(login, password);
