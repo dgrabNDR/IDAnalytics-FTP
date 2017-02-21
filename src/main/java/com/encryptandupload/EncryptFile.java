@@ -53,6 +53,7 @@ public class EncryptFile {
 	
 	public static byte[] encrypt(byte[] data) {
           try{
+		
               // ----- Read in the public key
               File theFile = new File("/app/./src/main/java/com/encryptandupload/keys/ID_Analytics_PGP_Public_Key.asc");
         System.out.println("file: "+theFile);
@@ -71,15 +72,7 @@ public class EncryptFile {
               System.out.println("Reading the temp file to make sure that the bits were written\n--------------");
               BufferedReader isr = new BufferedReader(new FileReader(tempfile));
               System.out.println("key: "+key);
-	if(key != null){  
-              int count = 0;
-              for ( java.util.Iterator iterator = key.getUserIDs(); iterator.hasNext(); )
-              {
-                      count++;
-                      System.out.println((String) iterator.next());
-              }
-              System.out.println("Key Count = " + count);
-	}
+
               // create an armored ascii file
               // FileOutputStream out = new FileOutputStream(outputfile);
               // encrypt the file
@@ -103,8 +96,10 @@ public class EncryptFile {
       
 
 	private static void _encrypt(String fileName, ByteArrayOutputStream bOut, byte[] out, PGPPublicKey encKey) throws IOException, NoSuchProviderException, PGPException {
-	      //out = new DataOutputStream(out);
-		  //
+	      System.out.println("fileName: "+fileName);
+		System.out.println("bOut: "+bOut);
+		System.out.println("data: "+out);
+		System.out.println("encKey: "+encKey);
 	      OutputStream outStream = null;
 	      //System.out.println("creating comData...");
 	      // get the data from the original file
