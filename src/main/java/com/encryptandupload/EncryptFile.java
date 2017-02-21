@@ -39,22 +39,20 @@ public class EncryptFile {
 	
 	public static void getAllFiles(File curDir) {		
         File[] filesList = curDir.listFiles();
-		if(filesList != null){
-			for(File f : filesList){
-		    if(f.isDirectory())
-			System.out.println(f.getAbsolutePath());
-			EncryptFile.getAllFiles(f);
-		    if(f.isFile()){
-			System.out.println(f.getName());
-		    }
-		}
-	}
+        for(File f : filesList){
+            //if(f.isDirectory())
+            //	System.out.println(f.getName()+"/");
+            //	EncryptFile.getAllFiles(f);
+            if(f.isFile()){
+                System.out.println(f.getName());
+            }
+        }
     }
 	
 	public static byte[] encrypt(byte[] data) {
           try{
               // ----- Read in the public key
-              PGPPublicKey key = readPublicKeyFromCol(new FileInputStream(new File("/app/./src/main/java/com/encryptandupload/keys/ID_Analytics_PGP_Public_Key.asc")));
+              PGPPublicKey key = readPublicKeyFromCol(new FileInputStream(new File("keys/ID_Analytics_PGP_Public_Key.asc")));
               System.out.println("Creating a temp file...");
               // create a file and write the string to it
               File tempfile = File.createTempFile("pgp", null);
@@ -121,7 +119,8 @@ public class EncryptFile {
      }
     
      private static PGPPublicKey readPublicKeyFromCol(InputStream in) throws Exception {
-	     PGPPublicKeyRing pkRing = null;
+    	 PGPUtil.getDecoderStream(in);
+    	 PGPPublicKeyRing pkRing = null;
 	     PGPPublicKeyRingCollection pkCol = new PGPPublicKeyRingCollection(in);
 	     System.out.println("key ring size=" + pkCol.size());
 	     Iterator it = pkCol.getKeyRings();
