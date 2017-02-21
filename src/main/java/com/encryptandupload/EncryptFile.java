@@ -42,7 +42,7 @@ public class EncryptFile {
         File[] filesList = curDir.listFiles();
         for(File f : filesList){
             if(f.isDirectory())
-                getAllFiles();
+                EncryptFile.getAllFiles();
             if(f.isFile()){
                 System.out.println(f.getName());
             }
