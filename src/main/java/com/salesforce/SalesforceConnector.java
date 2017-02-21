@@ -49,7 +49,7 @@ public class SalesforceConnector {
 	}
 	
 	public static OAuthResponse getOAuthToken() throws ClientProtocolException, IOException{
-		System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
+		//System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
 		
 		OAuthResponse oauthres = new OAuthResponse();
 		String res = "";
