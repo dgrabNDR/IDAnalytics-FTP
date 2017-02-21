@@ -14,6 +14,8 @@ import org.bouncycastle.openpgp.PGPPublicKey;
 import org.bouncycastle.openpgp.PGPPublicKeyRing;
 import org.bouncycastle.openpgp.PGPPublicKeyRingCollection;
 import org.bouncycastle.openpgp.PGPUtil;
+import org.bouncycastle.openpgp.operator.PGPDataEncryptorBuilder;
+import org.bouncycastle.openpgp.operator.PGPKeyEncryptionMethodGenerator;
 import org.apache.commons.io.FileUtils;
 
 public class EncryptFile {
@@ -52,7 +54,7 @@ public class EncryptFile {
 	public static byte[] encrypt(byte[] data) {
           try{
               // ----- Read in the public key
-              PGPPublicKey key = readPublicKeyFromCol(new FileInputStream(new File("/app/./src/main/java/com/encryptandupload/keys/ID_Analytics_PGP_Public_Key.asc")));
+              PGPPublicKey key = readPublicKeyFromCol(new FileInputStream(new File("keys/ID_Analytics_PGP_Public_Key.asc")));
               System.out.println("Creating a temp file...");
               // create a file and write the string to it
               File tempfile = File.createTempFile("pgp", null);
@@ -61,9 +63,24 @@ public class EncryptFile {
               fos.close();
               System.out.println("Temp file created at ");
               System.out.println(tempfile.getAbsolutePath());
-
+              System.out.println("Reading the temp file to make sure that the bits were written\n--------------");
+              BufferedReader isr = new BufferedReader(new FileReader(tempfile));
+              
+              int count = 0;
+              for ( java.util.Iterator iterator = key.getUserIDs(); iterator.hasNext(); )
+              {
+                      count++;
+                      System.out.println((String) iterator.next());
+              }
+              System.out.println("Key Count = " + count);
+              // create an armored ascii file
+              // FileOutputStream out = new FileOutputStream(outputfile);
+              // encrypt the file
+              // encryptFile(tempfile.getAbsolutePath(), out, key);
+              // Encrypt the data
               ByteArrayOutputStream baos = new ByteArrayOutputStream();
-              _encrypt(tempfile.getAbsolutePath(), baos, key);
+              //_encrypt(tempfile.getAbsolutePath(), baos, key);
+              _encrypt(tempfile.getAbsolutePath(), baos, data, key);
               System.out.println("encrypted text length=" + baos.size());			
               tempfile.delete();
               return baos.toByteArray();
@@ -77,31 +94,39 @@ public class EncryptFile {
           return null;
       }
       
-    @SuppressWarnings("deprecation")
-	private static void _encrypt(String fileName, OutputStream out, PGPPublicKey encKey) throws IOException, NoSuchProviderException, PGPException {
-	      out = new DataOutputStream(out);
-	      ByteArrayOutputStream bOut = new ByteArrayOutputStream();
-	      System.out.println("creating comData...");
+
+	private static void _encrypt(String fileName, ByteArrayOutputStream bOut, byte[] out, PGPPublicKey encKey) throws IOException, NoSuchProviderException, PGPException {
+	      //out = new DataOutputStream(out);
+		  //
+	      OutputStream outStream = null;
+	      //System.out.println("creating comData...");
 	      // get the data from the original file
-	      PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedDataGenerator.ZIP);
-	      PGPUtil.writeFileToLiteralData(comData.open(bOut), PGPLiteralData.BINARY, new File(fileName));
-	      comData.close();
-	      System.out.println("comData created...");
-	      System.out.println("using PGPEncryptedDataGenerator...");
+	      //PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedDataGenerator.ZIP);
+	      PGPDataEncryptorBuilder deb = null;
+	      PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(deb);
+	      //PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(PGPEncryptedDataGenerator.CAST5,  new SecureRandom(), "BC");
+	      PGPKeyEncryptionMethodGenerator kemg = null;
+	      kemg.generate(PGPEncryptedDataGenerator.CAST5, out);
+	      cPk.addMethod(kemg);
+	      
+	      PGPUtil.writeFileToLiteralData(cPk.open(outStream, out.length), PGPLiteralData.BINARY, new File(fileName));
+	      //comData.close();
+	      //System.out.println("comData created...");
+	      //System.out.println("using PGPEncryptedDataGenerator...");
 	      // object that encrypts the data
-	      PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(PGPEncryptedDataGenerator.CAST5, 
-	                                      new SecureRandom(), "BC");
-	      cPk.addMethod(encKey);
+		  
 	      System.out.println("used PGPEncryptedDataGenerator...");
 	      // take the outputstream of the original file and turn it into a byte
 	      // array
+	      bOut = (ByteArrayOutputStream) outStream;
 	      byte[] bytes = bOut.toByteArray();
 	      System.out.println("wrote bOut to byte array...");
 	      // write the plain text bytes to the armored outputstream
-	      OutputStream cOut = cPk.open(out, bytes.length);
+	      Long l = (long) bytes.length;
+	      OutputStream cOut = cPk.open(bOut, l);
 	      cOut.write(bytes);
 	      cPk.close();
-	      out.close();
+	      outStream.close();
      }
     
      private static PGPPublicKey readPublicKeyFromCol(InputStream in) throws Exception {
