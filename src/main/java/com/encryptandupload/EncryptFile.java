@@ -37,12 +37,11 @@ public class EncryptFile {
 		FileUtils.cleanDirectory(new File("/files/"));
 	}
 	
-	public static void getAllFiles() {
-		File curDir = new File(".");
+	public static void getAllFiles(File curDir) {		
         File[] filesList = curDir.listFiles();
         for(File f : filesList){
             if(f.isDirectory())
-                EncryptFile.getAllFiles();
+            	EncryptFile.getAllFiles(f);
             if(f.isFile()){
                 System.out.println(f.getName());
             }

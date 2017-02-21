@@ -1,6 +1,7 @@
 package main.java.com.encryptandupload;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,6 @@ import main.java.com.salesforce.*;
 
 import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.*;
-
 
 import com.google.gson.Gson;
 import com.sforce.soap.partner.sobject.SObject;
@@ -50,7 +50,7 @@ public class EncryptAndUpload extends HttpServlet{
 		// encrypt files
 
 		System.out.println("attempting to encrypt attachment...");
-		EncryptFile.getAllFiles();
+		EncryptFile.getAllFiles(new File("."));
 		for(SObject so : attachments){			
 			//EncryptFile.writeToFile((String)so.getField("Name"), (String)so.getField("Body"));
 			try {
