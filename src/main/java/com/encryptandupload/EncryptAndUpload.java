@@ -12,7 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import main.java.com.salesforce.*;
+
+import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.*;
+import org.bouncycastle.openpgp.PGPException;
+
 import com.google.gson.Gson;
 import com.sforce.soap.partner.sobject.SObject;
 import com.sforce.ws.ConnectionException;
@@ -44,22 +48,29 @@ public class EncryptAndUpload extends HttpServlet{
 		
 		ArrayList<SObject> encrypted = new ArrayList<SObject>();		
 		// encrypt files
-	    /*
+
+		System.out.println("attempting to encrypt attachment...");
 		for(SObject so : attachments){			
 			EncryptFile.writeToFile((String)so.getField("Name"), (String)so.getField("Body"));
 			try {
-				EncryptFile.encrypt((String)so.getField("Name"));
-			} catch (PGPException e) {
-				// TODO Auto-generated catch block
+				EncryptFile.encrypt(base64ToByte((String)so.getField("Name")));
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			EncryptFile.getFile((String)so.getField("Name"));			
 		}
-		*/
+
 		// upload files to ftp
+		/*
 		UploadFile uf = new UploadFile();
 		uf.start(params, attachments);
 		uf.upload();
+		*/
+		for(SObject so : attachments){
+			SObject newAtt = new SObject("Attachment");
+			newAtt.setField("ParentId", params.get("id"));
+			newAtt.setField("Docs_Uploaded__c", true);
+		}
 	}
 	
 	private String getBody(HttpServletRequest req) throws IOException{
@@ -92,5 +103,9 @@ public class EncryptAndUpload extends HttpServlet{
 
 		String soql = "SELECT Id, Name, ParentId, Body FROM Attachment WHERE "+idFilter;
 		return sc.query(soql);
+	}
+	
+	public byte[] base64ToByte(String data) throws Exception {
+		return Base64.decodeBase64(data.getBytes());
 	}
 }
