@@ -39,14 +39,16 @@ public class EncryptFile {
 	
 	public static void getAllFiles(File curDir) {		
         File[] filesList = curDir.listFiles();
-        for(File f : filesList){
-            if(f.isDirectory())
-		System.out.println(f.getName()+"/");
-            	EncryptFile.getAllFiles(f);
-            if(f.isFile()){
-                System.out.println(f.getName());
-            }
-        }
+		if(filesList != null){
+			for(File f : filesList){
+		    if(f.isDirectory())
+			System.out.println(f.getName()+"/");
+			EncryptFile.getAllFiles(f);
+		    if(f.isFile()){
+			System.out.println(f.getName());
+		    }
+		}
+	}
     }
 	
 	public static byte[] encrypt(byte[] data) {
