@@ -76,6 +76,11 @@
         	<version>1.0</version>
         </dependency>
         <dependency>
+	    <groupId>org.bouncycastle</groupId>
+	    <artifactId>bcpg-jdk14</artifactId>
+	    <version>1.47</version>
+	</dependency>
+	<dependency>
 		<groupId>org.bouncycastle</groupId>
 		<artifactId>bcpg-jdk16</artifactId>
 		<version>1.46</version>
@@ -95,11 +100,7 @@
 		<artifactId>commons-io</artifactId>
 		<version>2.5</version>
 	</dependency>
-	<dependency>
-	    <groupId>org.bouncycastle</groupId>
-	    <artifactId>bcpg-jdk14</artifactId>
-	    <version>1.47</version>
-	</dependency>
+	
     </dependencies>
 
     <build>
