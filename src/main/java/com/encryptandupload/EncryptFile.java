@@ -5,15 +5,7 @@ package main.java.com.encryptandupload;
 import java.io.*;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
-
-
-
-
-
-
-
 import java.util.Iterator;
-
 //import com.didisoft.pgp.*;
 import org.bouncycastle.*;
 import org.bouncycastle.openpgp.PGPCompressedDataGenerator;
@@ -41,17 +33,11 @@ public class EncryptFile {
 			return file;
 		}
 		return null;
-	}
-	
-	public static void clearDir() throws IOException{
-		FileUtils.cleanDirectory(new File("/files/"));
-	}
-	
-	
+	}	
 	public static byte[] encrypt(byte[] data) {
           try{
               // ----- Read in the public key
-              PGPPublicKey key = readPublicKeyFromCol(new FileInputStream("keys/ID_Analytics_PGP_Public_Key.asc"));
+              PGPPublicKey key = readPublicKeyFromCol(new FileInputStream("./keys/ID_Analytics_PGP_Public_Key.asc"));
               System.out.println("Creating a temp file...");
               // create a file and write the string to it
               File tempfile = File.createTempFile("pgp", null);
