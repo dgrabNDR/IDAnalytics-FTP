@@ -65,14 +65,14 @@ public class EncryptFile {
               System.out.println(tempfile.getAbsolutePath());
               System.out.println("Reading the temp file to make sure that the bits were written\n--------------");
               BufferedReader isr = new BufferedReader(new FileReader(tempfile));
-              /*
+              
               int count = 0;
               for ( java.util.Iterator iterator = key.getUserIDs(); iterator.hasNext(); )
               {
                       count++;
                       System.out.println((String) iterator.next());
               }
-              System.out.println("Key Count = " + count);*/
+              System.out.println("Key Count = " + count);
               // create an armored ascii file
               // FileOutputStream out = new FileOutputStream(outputfile);
               // encrypt the file
@@ -98,15 +98,15 @@ public class EncryptFile {
 	private static void _encrypt(String fileName, ByteArrayOutputStream bOut, byte[] out, PGPPublicKey encKey) throws IOException, NoSuchProviderException, PGPException {
 	      //out = new DataOutputStream(out);
 		  //
-	      OutputStream outStream;
+	      OutputStream outStream = null;
 	      //System.out.println("creating comData...");
 	      // get the data from the original file
 	      //PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedDataGenerator.ZIP);
-	      PGPDataEncryptorBuilder deb;
+	      PGPDataEncryptorBuilder deb = null;
 	      deb.build(out);
 	      PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(deb);
 	      //PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(PGPEncryptedDataGenerator.CAST5,  new SecureRandom(), "BC");
-	      PGPKeyEncryptionMethodGenerator kemg;
+	      PGPKeyEncryptionMethodGenerator kemg = null;
 	      kemg.generate(PGPEncryptedDataGenerator.CAST5, out);
 	      cPk.addMethod(kemg);
 	      
