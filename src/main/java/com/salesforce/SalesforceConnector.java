@@ -49,6 +49,8 @@ public class SalesforceConnector {
 	}
 	
 	public static OAuthResponse getOAuthToken() throws ClientProtocolException, IOException{
+		System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
+		
 		OAuthResponse oauthres = new OAuthResponse();
 		String res = "";
 		CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -64,7 +66,7 @@ public class SalesforceConnector {
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
 		System.out.println("httpPost: "+httpPost);
 		CloseableHttpResponse response = httpclient.execute(httpPost);
-		System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
+		
 		try {
 			System.out.println(response.getStatusLine());
 			HttpEntity entity = response.getEntity();
