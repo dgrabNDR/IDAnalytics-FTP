@@ -61,21 +61,7 @@ public class EncryptFile {
               fos.close();
               System.out.println("Temp file created at ");
               System.out.println(tempfile.getAbsolutePath());
-              System.out.println("Reading the temp file to make sure that the bits were written\n--------------");
-              BufferedReader isr = new BufferedReader(new FileReader(tempfile));
-              
-              int count = 0;
-              for ( java.util.Iterator iterator = key.getUserIDs(); iterator.hasNext(); )
-              {
-                      count++;
-                      System.out.println((String) iterator.next());
-              }
-              System.out.println("Key Count = " + count);
-              // create an armored ascii file
-              // FileOutputStream out = new FileOutputStream(outputfile);
-              // encrypt the file
-              // encryptFile(tempfile.getAbsolutePath(), out, key);
-              // Encrypt the data
+
               ByteArrayOutputStream baos = new ByteArrayOutputStream();
               _encrypt(tempfile.getAbsolutePath(), baos, key);
               System.out.println("encrypted text length=" + baos.size());			
