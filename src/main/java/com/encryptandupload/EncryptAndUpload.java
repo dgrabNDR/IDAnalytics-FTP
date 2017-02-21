@@ -11,9 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.codec.binary.Base64;
-
-
 import main.java.com.salesforce.*;
 import org.bouncycastle.*;
 import com.google.gson.Gson;
@@ -60,7 +57,9 @@ public class EncryptAndUpload extends HttpServlet{
 		}
 		*/
 		// upload files to ftp
-		//UploadFile.start(params, attachments);
+		UploadFile uf = new UploadFile();
+		uf.start(params, attachments);
+		uf.upload();
 	}
 	
 	private String getBody(HttpServletRequest req) throws IOException{
