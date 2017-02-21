@@ -14,6 +14,7 @@ import java.security.Security;
 import java.util.Date;
 import java.util.Iterator;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.bouncycastle.bcpg.ArmoredOutputStream;
 import org.bouncycastle.bcpg.HashAlgorithmTags;
@@ -258,8 +259,8 @@ public class PGPUtils {
             }
         }
     }
-
-    public static byte[] encryptFile(OutputStream out, String fileName, PGPPublicKey encKey, boolean armor, boolean withIntegrityCheck) throws IOException, NoSuchProviderException, PGPException {
+    
+    public static byte[] encryptFile(OutputStream out, byte[] data, PGPPublicKey encKey, boolean armor, boolean withIntegrityCheck) throws IOException, NoSuchProviderException, PGPException {
     	Security.addProvider(new BouncyCastleProvider());
 
         if (armor) {
@@ -268,11 +269,15 @@ public class PGPUtils {
 
         ByteArrayOutputStream bOut = new ByteArrayOutputStream();
         PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedData.ZIP);
+        File theFile = new File("/app/./src/main/java/com/encryptandupload/files/newFile.pgp");
+        if(theFile.createNewFile()) {
+        	FileOutputStream fos = new FileOutputStream(theFile);
+        }
 
         PGPUtil.writeFileToLiteralData(
                 comData.open(bOut),
                 PGPLiteralData.BINARY,
-                new File(fileName) );
+                theFile );
 
         comData.close();
 
@@ -506,5 +511,4 @@ public class PGPUtils {
         }
         return true;
     }
-
 }

@@ -14,8 +14,8 @@ public class EncryptFile {
 	
     public byte[] encrypt(byte[] data) throws Exception{
 		FileInputStream keyIn = new FileInputStream("/app/./src/main/java/com/encryptandupload/keys/pubring.pkr");
-        FileOutputStream out = new FileOutputStream("/app/./src/main/java/com/encryptandupload/greatFile.pgp");
-        byte[] encryptedData = PGPUtils.encryptFile(out, "greatFile.txt", PGPUtils.readPublicKey(keyIn), asciiArmored, integrityCheck);
+        FileOutputStream out = new FileOutputStream("/app/./src/main/java/com/encryptandupload/greatFile.pgp"); 
+        byte[] encryptedData = PGPUtils.encryptFile((OutputStream)out, data, PGPUtils.readPublicKey(keyIn), asciiArmored, integrityCheck);
         out.close();
         keyIn.close();
         return encryptedData;
