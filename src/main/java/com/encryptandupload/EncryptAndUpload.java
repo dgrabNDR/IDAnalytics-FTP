@@ -37,7 +37,7 @@ public class EncryptAndUpload extends HttpServlet{
 		try {			
 			sc.login();
 			attachments = query(params.get("attId"));
-			System.out.println("attachments ==>"+attachments);	
+			//System.out.println("attachments ==>"+attachments);	
 		} catch (ConnectionException e1) {
 			e1.printStackTrace();
 		}
