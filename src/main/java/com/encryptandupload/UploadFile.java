@@ -19,12 +19,13 @@ public class UploadFile {
 
 	
 	public void start(Map<String,String> p, ArrayList<SObject> files){
+		System.out.println("setting up uploader...");
 		params = p;
 		lstAtt = files;
 	}
 	
 	public void upload(){
-		ArrayList<SObject> dsToUpdate = new ArrayList<SObject>();
+		System.out.println("attempting upload...");
 		try{
 			GenericFTPClient sftp = new GenericFTPClient();
 			sftp.connect(params.get("ftphost"), params.get("ftpuser"), params.get("ftppass"), 22);
