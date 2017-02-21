@@ -65,7 +65,7 @@ public class EncryptFile {
               System.out.println(tempfile.getAbsolutePath());
               System.out.println("Reading the temp file to make sure that the bits were written\n--------------");
               BufferedReader isr = new BufferedReader(new FileReader(tempfile));
-              System.out.println(key.getUserIDs());
+              System.out.println(key);
 		  /*
               int count = 0;
               for ( java.util.Iterator iterator = key.getUserIDs(); iterator.hasNext(); )
