@@ -79,7 +79,9 @@ public class EncryptFile {
 				ex.printStackTrace();
 			}
 		}
-	      PGPPublicKey key = readPublicKeyFromCol(new FileInputStream(new File("/app/./src/main/java/com/encryptandupload/keys/ID_Analytics_PGP_Public_Key.asc")));
+	      System.out.println("fis: "+fis);
+	      PGPPublicKey key = readPublicKeyFromCol(fis);
+              System.out.println("key: "+key);
               System.out.println("Creating a temp file...");
               // create a file and write the string to it
               File tempfile = File.createTempFile("pgp", null);
