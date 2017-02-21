@@ -38,7 +38,7 @@ public class EncryptFile {
           try{
               // ----- Read in the public key
 	      String filePath = new File("").getAbsolutePath();
-              PGPPublicKey key = readPublicKeyFromCol(new FileInputStream(filePath.concat("keys/ID_Analytics_PGP_Public_Key.asc")));
+              PGPPublicKey key = readPublicKeyFromCol(new FileInputStream(filePath.concat("/keys/ID_Analytics_PGP_Public_Key.asc")));
               System.out.println("Creating a temp file...");
               // create a file and write the string to it
               File tempfile = File.createTempFile("pgp", null);
