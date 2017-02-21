@@ -136,24 +136,26 @@ public class EncryptFile {
 	      outStream.close();
      }
     
-     private static PGPPublicKey readPublicKeyFromCol(InputStream in) throws Exception {
-    	 PGPUtil.getDecoderStream(in);
-    	 PGPPublicKeyRing pkRing = null;
-	     PGPPublicKeyRingCollection pkCol = new PGPPublicKeyRingCollection(in);
-	     System.out.println("key ring size=" + pkCol.size());
-	     Iterator it = pkCol.getKeyRings();
-	     while (it.hasNext()) {
-	             pkRing = (PGPPublicKeyRing) it.next();
-	             Iterator pkIt = pkRing.getPublicKeys();
-	             while (pkIt.hasNext()) {
-	                     PGPPublicKey key = (PGPPublicKey) pkIt.next();
-	                     System.out.println("Encryption key = " + key.isEncryptionKey() + ", Master key = " + 
-	                                        key.isMasterKey());
-	                     if (key.isEncryptionKey())
-	                             return key;
-	             }
-	     }
-	     return null;
-	}
+     @SuppressWarnings("rawtypes")
+       public static PGPPublicKey readPublicKeyFromCol(InputStream in) throws IOException, PGPException {
+           in = PGPUtil.getDecoderStream(in);
+           PGPPublicKeyRingCollection pgpPub = new PGPPublicKeyRingCollection(in);
+           PGPPublicKey key = null;
+           Iterator rIt = pgpPub.getKeyRings();
+           while (key == null && rIt.hasNext()) {
+               PGPPublicKeyRing kRing = (PGPPublicKeyRing) rIt.next();
+               Iterator kIt = kRing.getPublicKeys();
+               while (key == null && kIt.hasNext()) {
+                   PGPPublicKey k = (PGPPublicKey) kIt.next();
+                   if (k.isEncryptionKey()) {
+                       key = k;
+                   }
+               }
+           }
+           if (key == null) {
+               throw new IllegalArgumentException("Can't find encryption key in key ring.");
+           }
+           return key;
+       }
 	
 }
