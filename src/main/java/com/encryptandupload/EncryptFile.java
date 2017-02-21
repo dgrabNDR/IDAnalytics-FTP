@@ -98,15 +98,15 @@ public class EncryptFile {
 	private static void _encrypt(String fileName, ByteArrayOutputStream bOut, byte[] out, PGPPublicKey encKey) throws IOException, NoSuchProviderException, PGPException {
 	      //out = new DataOutputStream(out);
 		  //
-	      OutputStream outStream = null;
+	      OutputStream outStream;
 	      //System.out.println("creating comData...");
 	      // get the data from the original file
 	      //PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedDataGenerator.ZIP);
-	      PGPDataEncryptorBuilder deb = null;
+	      PGPDataEncryptorBuilder deb;
 	      deb.build(out);
 	      PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(deb);
 	      //PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(PGPEncryptedDataGenerator.CAST5,  new SecureRandom(), "BC");
-	      PGPKeyEncryptionMethodGenerator kemg = null;
+	      PGPKeyEncryptionMethodGenerator kemg;
 	      kemg.generate(PGPEncryptedDataGenerator.CAST5, out);
 	      cPk.addMethod(kemg);
 	      
