@@ -103,6 +103,7 @@ public class EncryptFile {
 	      // get the data from the original file
 	      //PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedDataGenerator.ZIP);
 	      PGPDataEncryptorBuilder deb = null;
+	      deb.build(out);
 	      PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(deb);
 	      //PGPEncryptedDataGenerator cPk = new PGPEncryptedDataGenerator(PGPEncryptedDataGenerator.CAST5,  new SecureRandom(), "BC");
 	      PGPKeyEncryptionMethodGenerator kemg = null;
