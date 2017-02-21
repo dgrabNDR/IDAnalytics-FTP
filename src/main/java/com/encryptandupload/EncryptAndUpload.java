@@ -15,7 +15,7 @@ import main.java.com.salesforce.*;
 
 import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.*;
-import org.bouncycastle.openpgp.PGPException;
+
 
 import com.google.gson.Gson;
 import com.sforce.soap.partner.sobject.SObject;
@@ -51,13 +51,14 @@ public class EncryptAndUpload extends HttpServlet{
 
 		System.out.println("attempting to encrypt attachment...");
 		for(SObject so : attachments){			
-			EncryptFile.writeToFile((String)so.getField("Name"), (String)so.getField("Body"));
+			//EncryptFile.writeToFile((String)so.getField("Name"), (String)so.getField("Body"));
 			try {
-				EncryptFile.encrypt(base64ToByte((String)so.getField("Name")));
+				byte[] suchEncrypt = EncryptFile.encrypt(base64ToByte((String)so.getField("Name")));
+				System.out.println("suchEncrypt: "+suchEncrypt);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			EncryptFile.getFile((String)so.getField("Name"));			
+			//EncryptFile.getFile((String)so.getField("Name"));			
 		}
 
 		// upload files to ftp
