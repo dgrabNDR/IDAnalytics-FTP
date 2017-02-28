@@ -59,7 +59,7 @@ public class EncryptAndUpload extends HttpServlet{
 				System.out.println("suchEncrypt: "+suchEncrypt);
 				SObject newAtt = new SObject("Attachment");
 				newAtt.setField("ParentId", so.getField("ParentId"));
-				newAtt.setField("Name", so.getField("ParentId")+".pgp");
+				newAtt.setField("Name", so.getField("Name")+".pgp");
 				newAtt.setField("Body", suchEncrypt);				
 				encrypted.add(newAtt);
 			} catch (Exception e) {
