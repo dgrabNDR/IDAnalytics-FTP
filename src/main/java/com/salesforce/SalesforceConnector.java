@@ -32,8 +32,8 @@ import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 
 public class SalesforceConnector {
-	private static final String CLIENTID ="3MVG9yZ.WNe6byQBrEHW_cRm._WbzrhwX7sW1gimi25mUrZSlV9IpvMMVs4Y51dAEyro5MmJng.25A3LEF14O";
-	private static final String CLIENT_SECRET = "6782505781914341236";
+	private static final String CLIENTID ="3MVG9yZ.WNe6byQBrEHW_cRm._dp_BF.2h1xhv1.qUNdo9mllhb6wLTwiF1e5vhIH1eu9Ojvl0UiD6Y62FGr6";
+	private static final String CLIENT_SECRET = "7740176649279426585";
 	private static String ENV;
 	private static String username;
 	private static String password; 
@@ -49,12 +49,9 @@ public class SalesforceConnector {
 	}
 	
 	public static OAuthResponse getOAuthToken() throws ClientProtocolException, IOException{
-		//System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
-		
 		OAuthResponse oauthres = new OAuthResponse();
 		String res = "";
 		CloseableHttpClient httpclient = HttpClients.createDefault();
-		System.out.println("https://"+ENV+".salesforce.com/services/oauth2/token");
 		HttpPost httpPost = new HttpPost("https://"+ENV+".salesforce.com/services/oauth2/token");
 		List <NameValuePair> nvps = new ArrayList <NameValuePair>();
 		nvps.add(new BasicNameValuePair("grant_type", "password"));
@@ -62,11 +59,9 @@ public class SalesforceConnector {
 		nvps.add(new BasicNameValuePair("client_secret", CLIENT_SECRET));
 		nvps.add(new BasicNameValuePair("username", username));
 		nvps.add(new BasicNameValuePair("password", password));
-		System.out.println("nvps: "+nvps);
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
-		System.out.println("httpPost: "+httpPost);
 		CloseableHttpResponse response = httpclient.execute(httpPost);
-		
+
 		try {
 			System.out.println(response.getStatusLine());
 			HttpEntity entity = response.getEntity();
@@ -107,6 +102,18 @@ public class SalesforceConnector {
 			SObject[] sobjArr = chunk.toArray(new SObject[chunk.size()]);
 			System.out.println("Updating : "+sobjArr.length);
 			partnerConnection.update(sobjArr);
+			//results.addAll(Arrays.asList(partnerConnection.update(sobjArr)));
+		}
+		return results;
+	}
+	
+	public ArrayList<SaveResult> create( ArrayList<SObject> sobjects) throws ConnectionException{
+		ArrayList<SaveResult> results = new ArrayList<SaveResult>();
+		ArrayList<ArrayList<SObject>> chunkedsobjects = chunk(sobjects,200);
+		for(ArrayList<SObject> chunk : chunkedsobjects){
+			SObject[] sobjArr = chunk.toArray(new SObject[chunk.size()]);
+			System.out.println("Updating : "+sobjArr.length);
+			partnerConnection.create(sobjArr);
 			//results.addAll(Arrays.asList(partnerConnection.update(sobjArr)));
 		}
 		return results;
