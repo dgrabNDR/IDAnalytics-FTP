@@ -55,6 +55,7 @@ public class EncryptAndUpload extends HttpServlet{
 			//EncryptFile.writeToFile((String)so.getField("Name"), (String)so.getField("Body"));
 			try {
 				EncryptFile ef = new EncryptFile();
+				System.out.println("Body Raw ==> "+(String)so.getField("Body"));
 				byte[] suchEncrypt = ef.encrypt(base64ToByte((String)so.getField("Body")));
 				System.out.println("suchEncrypt: "+suchEncrypt);
 				SObject newAtt = new SObject("Attachment");
