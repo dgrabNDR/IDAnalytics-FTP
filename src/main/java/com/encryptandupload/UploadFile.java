@@ -1,6 +1,10 @@
 package main.java.com.encryptandupload;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,10 +19,10 @@ import com.sforce.ws.ConnectionException;
 
 public class UploadFile {
 	public Map<String,String> params = new HashMap<String,String>();
-	public ArrayList<SObject> lstAtt;
+	public ArrayList<File> lstAtt;
 
 	
-	public void start(Map<String,String> p, ArrayList<SObject> files){
+	public void start(Map<String,String> p, ArrayList<File> files){
 		System.out.println("setting up uploader...");
 		params = p;
 		lstAtt = files;
@@ -28,19 +32,18 @@ public class UploadFile {
 		System.out.println("attempting upload...");
 		try{
 			GenericFTPClient sftp = new GenericFTPClient();
+			System.out.println(sftp);
 			sftp.connect(params.get("ftphost"), params.get("ftpuser"), params.get("ftppass"), 22);
 			System.out.println("Change folder status:"+sftp.changeDir(params.get("ftpfolder")));
 
-			SObject att1 = lstAtt.get(0);
-			InputStream is1 = new ByteArrayInputStream(base64ToByte((String)att1.getField("Body")));
-			Boolean res = sftp.uploadFile(is1, (String) att1.getField("Name"));
+			File att = lstAtt.get(0);
+			byte[] fileBytes = readFile(att);
+		      
+			InputStream is1 = new ByteArrayInputStream(fileBytes);
+			Boolean res = sftp.uploadFile(is1, (String) att.getName());
 
 			if(res){
 				System.out.println("upload successful");
-				// add pgp attachment to sf record?
-			}
-			else{
-				System.out.println("Error Uploading : "+att1.getField("Id"));
 			}
 			System.out.println(res);
 
@@ -49,6 +52,18 @@ public class UploadFile {
 		catch(Exception ex){
 			ex.printStackTrace();
 		}
+	}
+	
+	public byte[] readFile(File file) throws IOException{
+		InputStream is = new FileInputStream(file);
+		long length = file.length();
+		byte[] bytes = new byte[(int)length];
+		int offset = 0;
+        int numRead = 0;
+        while (offset < bytes.length && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+            offset += numRead;
+        }
+        return bytes;
 	}
 	
 	public byte[] base64ToByte(String data) throws Exception {

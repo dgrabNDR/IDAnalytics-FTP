@@ -1,7 +1,9 @@
 package main.java.com.encryptandupload;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +48,8 @@ public class EncryptAndUpload extends HttpServlet{
 			e1.printStackTrace();
 		}
 		
-		ArrayList<SObject> encrypted = new ArrayList<SObject>();		
+		ArrayList<SObject> encryptedSObjs = new ArrayList<SObject>();
+		ArrayList<File> encryptedFiles = new ArrayList<File>();
 		// encrypt files
 
 		System.out.println("attempting to encrypt attachment...");
@@ -58,29 +61,38 @@ public class EncryptAndUpload extends HttpServlet{
 				//System.out.println("Body Raw ==> "+(String)so.getField("Body"));
 				byte[] suchEncrypt = ef.encrypt(base64ToByte((String)so.getField("Body")));
 				System.out.println("suchEncrypt: "+suchEncrypt);
+				
 				SObject newAtt = new SObject("Attachment");
 				newAtt.setField("ParentId", so.getField("ParentId"));
 				newAtt.setField("Name", so.getField("Name")+".pgp");
 				newAtt.setField("Body", suchEncrypt);				
-				encrypted.add(newAtt);
+				encryptedSObjs.add(newAtt);
+				
+				File theFile = new File("/app/./src/main/java/com/encryptandupload/testFile.pgp");
+				if(theFile.createNewFile()) {
+		        	FileOutputStream fos = new FileOutputStream(theFile);
+		        	fos.write(suchEncrypt);
+		        	fos.close();
+		        }
+				encryptedFiles.add(theFile);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
-			}
-			//EncryptFile.getFile((String)so.getField("Name"));			
+			}	
 		}
 		try {
-			sc.create(encrypted);
+			sc.create(encryptedSObjs);
 		} catch (ConnectionException e) {
 			e.printStackTrace();
 		}
 
 		// upload files to ftp
-		/*
-		UploadFile uf = new UploadFile();
-		uf.start(params, attachments);
-		uf.upload();
 		
-		for(SObject so : encrypted){
+		UploadFile uf = new UploadFile();
+		uf.start(params, encryptedFiles);
+		uf.upload();
+		/*
+		for(File f : encryptedFiles){
 			SObject newAtt = new SObject("Attachment");
 			newAtt.setField("ParentId", params.get("id"));
 			newAtt.setField("Docs_Uploaded__c", true);
