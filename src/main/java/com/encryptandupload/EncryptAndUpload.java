@@ -3,6 +3,7 @@ package main.java.com.encryptandupload;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,12 +33,15 @@ public class EncryptAndUpload extends HttpServlet{
 		Gson gson = new Gson();
 		Map<String,String> parameters = new HashMap<String,String>();		
 		String paramStr = getBody(req);
-		System.out.println("Incoming Request => "+paramStr);		
+		System.out.println("Incoming Request => "+paramStr);
+		
+		// get params from request body
 		parameters = (HashMap<String,String>) gson.fromJson(paramStr, params.getClass());
 		parameters.putAll(CredentialManager.getLogin());
 		this.params = parameters;
 		System.out.println("Params ==>"+gson.toJson(params));	
 		
+		// login to salesforce and pull attachment
 		sc = new SalesforceConnector(params.get("Username"),params.get("Password"),params.get("environment"));
 		ArrayList<SObject> attachments = new ArrayList<SObject>();		
 		try {			
@@ -50,53 +54,50 @@ public class EncryptAndUpload extends HttpServlet{
 		
 		ArrayList<SObject> encryptedSObjs = new ArrayList<SObject>();
 		ArrayList<File> encryptedFiles = new ArrayList<File>();
-		// encrypt files
-
-		System.out.println("attempting to encrypt attachment...");
-		//EncryptFile.getAllFiles(new File("."));
+		
+		// encrypt file
+		System.out.println("encrypting attachment...");
 		for(SObject so : attachments){			
 			//EncryptFile.writeToFile((String)so.getField("Name"), (String)so.getField("Body"));
 			try {
 				EncryptFile ef = new EncryptFile();
-				//System.out.println("Body Raw ==> "+(String)so.getField("Body"));
-				byte[] suchEncrypt = ef.encrypt(base64ToByte((String)so.getField("Body")));
-				System.out.println("suchEncrypt: "+suchEncrypt);
-				
-				SObject newAtt = new SObject("Attachment");
-				newAtt.setField("ParentId", so.getField("ParentId"));
-				newAtt.setField("Name", so.getField("Name")+".pgp");
-				newAtt.setField("Body", suchEncrypt);				
-				encryptedSObjs.add(newAtt);
-				
-				File theFile = new File("/app/./src/main/java/com/encryptandupload/testFile.pgp");
-				if(theFile.createNewFile()) {
-		        	FileOutputStream fos = new FileOutputStream(theFile);
-		        	fos.write(suchEncrypt);
-		        	fos.close();
-		        }
-				encryptedFiles.add(theFile);
-				
+				byte[] suchEncrypt = ef.encrypt(base64ToByte((String)so.getField("Body")));							
+				encryptedSObjs.add(fileToSObj((String)so.getField("ParentId"),(String)so.getField("Name")+".pgp",suchEncrypt));
+				encryptedFiles.add(newFile("/app/./src/main/java/com/encryptandupload/testFile.pgp",suchEncrypt));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}	
 		}
+		
+		// add attachment to report in salesforce
 		try {
 			sc.create(encryptedSObjs);
 		} catch (ConnectionException e) {
 			e.printStackTrace();
 		}
 
-		// upload files to ftp
-		
+		// upload files to ida ftp		
 		UploadFile uf = new UploadFile();
 		uf.start(params, encryptedFiles);
-		uf.upload();
-		/*
-		for(File f : encryptedFiles){
-			SObject newAtt = new SObject("Attachment");
-			newAtt.setField("ParentId", params.get("id"));
-			newAtt.setField("Docs_Uploaded__c", true);
-		}*/
+		//uf.upload();
+	}
+	
+	private SObject fileToSObj(String pId, String fileName, byte[] body){
+		SObject sObj = new SObject("Attachment");
+		sObj.setField("ParentId", pId);
+		sObj.setField("Name", fileName);
+		sObj.setField("Body", body);
+		return sObj;
+	}
+	
+	private File newFile(String fileName, byte[] body) throws FileNotFoundException, IOException{
+		File theFile = new File(fileName);
+		if(theFile.createNewFile()) {
+        	FileOutputStream fos = new FileOutputStream(theFile);
+        	fos.write(body);
+        	fos.close();
+        }
+		return theFile;
 	}
 	
 	private String getBody(HttpServletRequest req) throws IOException{
@@ -133,9 +134,5 @@ public class EncryptAndUpload extends HttpServlet{
 	
 	public byte[] base64ToByte(String data) throws Exception {
 		return Base64.decodeBase64(data.getBytes());
-	}
-	
-	public byte[] byteToBase64(byte[] data) throws Exception {
-		return Base64.encodeBase64(data);
 	}
 }
