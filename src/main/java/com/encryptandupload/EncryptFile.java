@@ -2,6 +2,8 @@ package main.java.com.encryptandupload;
 
 import java.io.*;
 
+import org.bouncycastle.openpgp.PGPPublicKey;
+
 public class EncryptFile {
 	private String passphrase;
     private String publicKeyFileName;
@@ -13,12 +15,12 @@ public class EncryptFile {
     
 	
     public byte[] encrypt(byte[] data) throws Exception{
-    	//FileInputStream keyIn = new FileInputStream("/app/./src/main/java/com/encryptandupload/keys/pubring.pkr");
 		FileInputStream keyIn = new FileInputStream("/app/./src/main/java/com/encryptandupload/keys/ID_Analytics_PGP_Public_Key.asc");
         FileOutputStream out = new FileOutputStream("/app/./src/main/java/com/encryptandupload/greatFile.pgp"); 
         System.out.println("Body Base64Decode byte[] ==> "+data);
-        System.out.println("PublicKey ==> "+PGPUtils.readPublicKey(keyIn));
-        byte[] encryptedData = PGPUtils.encryptFile((OutputStream)out, data, PGPUtils.readPublicKey(keyIn), true, integrityCheck);
+        PGPPublicKey pubKey = PGPUtils.readPublicKey(keyIn);
+        System.out.println("Public Key[] ==> "+pubKey);
+        byte[] encryptedData = PGPUtils.encryptFile((OutputStream)out, data, pubKey, true, integrityCheck);
         out.close();
         keyIn.close();
         return encryptedData;
