@@ -105,6 +105,11 @@ public class PGPUtils {
 
         return publicKey;
     }
+    
+    /*public static PGPPublicKey readArmoredPublicKey(InputStream in) throws IOException, PGPException {
+
+        
+    }*/
 
     @SuppressWarnings("unchecked")
 	public static PGPSecretKey readSecretKey(InputStream in)
@@ -270,15 +275,17 @@ public class PGPUtils {
         ByteArrayOutputStream bOut = new ByteArrayOutputStream();
         PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedData.ZIP);
         File theFile = new File("/app/./src/main/java/com/encryptandupload/greatFile.pgp");
-        if(theFile.createNewFile()) {
-        	FileOutputStream fos = new FileOutputStream(theFile);
-        	fos.write(data);
-        }
+        
+        //if(theFile.createNewFile()) {
+        //	FileOutputStream fos = new FileOutputStream(theFile);
+        //	fos.write(data);
+        //}
 
         PGPUtil.writeFileToLiteralData(
                 comData.open(bOut),
                 PGPLiteralData.BINARY,
-                theFile );
+                theFile,
+                data);
 
         comData.close();
 
@@ -290,6 +297,7 @@ public class PGPUtils {
         encryptedDataGenerator.addMethod(new BcPublicKeyKeyEncryptionMethodGenerator(encKey));
 
         byte[] bytes = bOut.toByteArray();
+        
         /*
         OutputStream cOut = encryptedDataGenerator.open(out, bytes.length);
         cOut.write(bytes);
