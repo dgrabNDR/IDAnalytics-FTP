@@ -11,6 +11,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 import main.java.com.salesforce.SalesforceConnector;
 
@@ -20,6 +28,7 @@ import com.sforce.ws.ConnectionException;
 public class UploadFile {
 	public Map<String,String> params = new HashMap<String,String>();
 	public ArrayList<File> lstAtt;
+	public Boolean res;
 
 	
 	public void start(Map<String,String> p, ArrayList<File> files){
@@ -40,7 +49,9 @@ public class UploadFile {
 			byte[] fileBytes = readFile(att);
 		      
 			InputStream is1 = new ByteArrayInputStream(fileBytes);
-			Boolean res = sftp.uploadFile(is1, (String) att.getName());
+			CloseableHttpClient httpclient = getClient();
+			
+			res = sftp.uploadFile(is1, (String) att.getName());
 
 			if(res){
 				System.out.println("upload successful");
@@ -52,6 +63,30 @@ public class UploadFile {
 		catch(Exception ex){
 			ex.printStackTrace();
 		}
+	}
+	
+	public CloseableHttpClient getClient(){
+		String fixieUrl = System.getenv("FIXIE_URL");
+
+        String[] fixieValues = fixieUrl.split("[/(:\\/@)/]+");
+        String fixieUser = fixieValues[1];
+        String fixiePassword = fixieValues[2];
+        String fixieHost = fixieValues[3];
+        int fixiePort = Integer.parseInt(fixieValues[4]);
+
+        CredentialsProvider credsProvider = new BasicCredentialsProvider();
+        credsProvider.setCredentials(
+                new AuthScope(fixieHost, fixiePort),
+                new UsernamePasswordCredentials(fixieUser, fixiePassword));
+        CloseableHttpClient httpclient = HttpClients.custom()
+                .setDefaultCredentialsProvider(credsProvider).build();
+
+            HttpHost proxy = new HttpHost(fixieHost, fixiePort);
+            RequestConfig config = RequestConfig.custom()
+                .setProxy(proxy)
+                .build();
+
+       return httpclient;
 	}
 	
 	public byte[] readFile(File file) throws IOException{

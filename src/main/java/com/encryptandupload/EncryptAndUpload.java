@@ -34,7 +34,7 @@ public class EncryptAndUpload extends HttpServlet{
 	Map<String,String> params = new HashMap<String,String>();
 	
 	@Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
 		Gson gson = new Gson();
 		Map<String,String> parameters = new HashMap<String,String>();		
 		String paramStr = getBody(req);
@@ -85,7 +85,13 @@ public class EncryptAndUpload extends HttpServlet{
 		System.out.println(InetAddress.getLocalHost());
 		UploadFile uf = new UploadFile();
 		uf.start(params, encryptedFiles);
-		//uf.upload();
+		try{
+			uf.upload();
+		} catch (Exception e){
+			System.out.println(e);
+		} finally {
+			System.out.println("did it work? "+uf.res);
+		}
 	}
 	
 	private SObject fileToSObj(String pId, String fileName, File theFile){
