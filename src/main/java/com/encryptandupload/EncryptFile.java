@@ -14,16 +14,18 @@ public class EncryptFile {
     private boolean integrityCheck = true;
     
 	
-    public byte[] encrypt(byte[] data) throws Exception{
-	FileInputStream keyIn = new FileInputStream("/app/./src/main/java/com/encryptandupload/keys/DanTest.asc");
-        FileOutputStream out = new FileOutputStream("/app/./src/main/java/com/encryptandupload/greatFile.pgp"); 
-        System.out.println("Body Base64Decode byte[] ==> "+data);
+    public File encrypt(byte[] data) throws Exception{
+		//FileInputStream keyIn = new FileInputStream("/app/./src/main/java/com/encryptandupload/keys/ID_Analytics_PGP_Public_Key.asc");
+		FileInputStream keyIn = new FileInputStream("/app/./src/main/java/com/encryptandupload/keys/DanTest.asc");
+		File f = new File("/app/./src/main/java/com/encryptandupload/myTestFile.pgp");
+        FileOutputStream out = new FileOutputStream(f); 
+        //System.out.println("Body Base64Decode byte[] ==> "+data);
         PGPPublicKey pubKey = PGPUtils.readPublicKey(keyIn);
-        System.out.println("Public Key[] ==> "+pubKey);
-        byte[] encryptedData = PGPUtils.encryptFile((OutputStream)out, data, pubKey, true, integrityCheck);
+        //System.out.println("Public Key[] ==> "+pubKey);
+        PGPUtils.encryptFile((OutputStream)out, data, pubKey, true, integrityCheck);
         out.close();
         keyIn.close();
-        return encryptedData;
+        return f;
     }
 	
 	public boolean isAsciiArmored() {

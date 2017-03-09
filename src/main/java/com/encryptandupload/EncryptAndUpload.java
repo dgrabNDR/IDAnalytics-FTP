@@ -6,7 +6,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import main.java.com.salesforce.*;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 import org.bouncycastle.*;
 
 import com.google.gson.Gson;
@@ -62,9 +66,9 @@ public class EncryptAndUpload extends HttpServlet{
 			//EncryptFile.writeToFile((String)so.getField("Name"), (String)so.getField("Body"));
 			try {
 				EncryptFile ef = new EncryptFile();
-				byte[] suchEncrypt = ef.encrypt(base64ToByte((String)so.getField("Body")));							
+				File suchEncrypt = ef.encrypt(base64ToByte((String)so.getField("Body")));							
 				encryptedSObjs.add(fileToSObj((String)so.getField("ParentId"),(String)so.getField("Name")+".pgp",suchEncrypt));
-				encryptedFiles.add(newFile("/app/./src/main/java/com/encryptandupload/testFile.pgp",suchEncrypt));
+				encryptedFiles.add(suchEncrypt);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}	
@@ -84,10 +88,17 @@ public class EncryptAndUpload extends HttpServlet{
 		//uf.upload();
 	}
 	
-	private SObject fileToSObj(String pId, String fileName, byte[] body){
+	private SObject fileToSObj(String pId, String fileName, File theFile){
 		SObject sObj = new SObject("Attachment");
 		sObj.setField("ParentId", pId);
 		sObj.setField("Name", fileName);
+		byte[] body = null;
+		try {
+			body = Files.readAllBytes(theFile.toPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		sObj.setField("Body", body);
 		return sObj;
 	}

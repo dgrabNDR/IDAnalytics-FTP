@@ -265,7 +265,7 @@ public class PGPUtils {
         }
     }
     
-    public static byte[] encryptFile(OutputStream out, byte[] data, PGPPublicKey encKey, boolean armor, boolean withIntegrityCheck) throws IOException, NoSuchProviderException, PGPException {
+    public static void encryptFile(OutputStream out, byte[] data, PGPPublicKey encKey, boolean armor, boolean withIntegrityCheck) throws IOException, NoSuchProviderException, PGPException {
     	Security.addProvider(new BouncyCastleProvider());
 
         if (armor) {
@@ -274,7 +274,7 @@ public class PGPUtils {
 
         ByteArrayOutputStream bOut = new ByteArrayOutputStream();
         PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedData.ZIP);
-        File theFile = new File("/app/./src/main/java/com/encryptandupload/greatFile.pgp");
+        File theFile = new File("/app/./src/main/java/com/encryptandupload/greatFile2.pgp");
         
         //if(theFile.createNewFile()) {
         //	FileOutputStream fos = new FileOutputStream(theFile);
@@ -298,13 +298,13 @@ public class PGPUtils {
 
         byte[] bytes = bOut.toByteArray();
         
-        /*
+        
         OutputStream cOut = encryptedDataGenerator.open(out, bytes.length);
         cOut.write(bytes);
         cOut.close();
         out.close();
-        */
-        
+       
+        /*
         // how encrypt an input file without outputting to the flat file
         ByteArrayOutputStream localByteArrayOutputStream = new ByteArrayOutputStream();
         Object localObject = localByteArrayOutputStream;
@@ -318,7 +318,8 @@ public class PGPUtils {
         localOutputStream.close();
 
         // your encrypted bytes array
-        return localByteArrayOutputStream.toByteArray();
+        return localByteArrayOutputStream.toByteArray(); 
+        */
         
     }
 
