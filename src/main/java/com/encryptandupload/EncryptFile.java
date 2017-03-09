@@ -14,15 +14,15 @@ public class EncryptFile {
     private boolean integrityCheck = true;
     
 	
-    public File encrypt(byte[] data) throws Exception{
-		//FileInputStream keyIn = new FileInputStream("/app/./src/main/java/com/encryptandupload/keys/ID_Analytics_PGP_Public_Key.asc");
-		FileInputStream keyIn = new FileInputStream("/app/./src/main/java/com/encryptandupload/keys/DanTest.asc");
+    public File encrypt(byte[] data, String fileName) throws Exception{
+		FileInputStream keyIn = new FileInputStream("/app/./src/main/java/com/encryptandupload/keys/ID_Analytics_PGP_Public_Key.asc");
+		//FileInputStream keyIn = new FileInputStream("/app/./src/main/java/com/encryptandupload/keys/DanTest.asc");
 		File f = new File("/app/./src/main/java/com/encryptandupload/myTestFile.pgp");
         FileOutputStream out = new FileOutputStream(f); 
         //System.out.println("Body Base64Decode byte[] ==> "+data);
         PGPPublicKey pubKey = PGPUtils.readPublicKey(keyIn);
         //System.out.println("Public Key[] ==> "+pubKey);
-        PGPUtils.encryptFile((OutputStream)out, data, pubKey, true, integrityCheck);
+        PGPUtils.encryptFile((OutputStream)out, data, fileName, pubKey, true, integrityCheck);
         out.close();
         keyIn.close();
         return f;

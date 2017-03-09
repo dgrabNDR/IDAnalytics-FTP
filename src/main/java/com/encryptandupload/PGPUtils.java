@@ -265,7 +265,7 @@ public class PGPUtils {
         }
     }
     
-    public static void encryptFile(OutputStream out, byte[] data, PGPPublicKey encKey, boolean armor, boolean withIntegrityCheck) throws IOException, NoSuchProviderException, PGPException {
+    public static void encryptFile(OutputStream out, byte[] data, String fileName, PGPPublicKey encKey, boolean armor, boolean withIntegrityCheck) throws IOException, NoSuchProviderException, PGPException {
     	Security.addProvider(new BouncyCastleProvider());
 
         if (armor) {
@@ -274,7 +274,7 @@ public class PGPUtils {
 
         ByteArrayOutputStream bOut = new ByteArrayOutputStream();
         PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedData.ZIP);
-        File theFile = new File("/app/./src/main/java/com/encryptandupload/myGreatFile.txt");
+        File theFile = new File(fileName);
         
         if(theFile.createNewFile()) {
         	FileOutputStream fos = new FileOutputStream(theFile);
