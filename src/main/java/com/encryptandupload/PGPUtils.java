@@ -274,7 +274,7 @@ public class PGPUtils {
 
         ByteArrayOutputStream bOut = new ByteArrayOutputStream();
         PGPCompressedDataGenerator comData = new PGPCompressedDataGenerator(PGPCompressedData.ZIP);
-        File theFile = new File("/app/./src/main/java/com/encryptandupload/greatFile2.pgp");
+        File theFile = new File("/app/./src/main/java/com/encryptandupload/greatFile.pgp");
         
         //if(theFile.createNewFile()) {
         //	FileOutputStream fos = new FileOutputStream(theFile);
