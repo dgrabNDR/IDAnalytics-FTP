@@ -15,7 +15,7 @@ public class EncryptFile {
     
 	
     public byte[] encrypt(byte[] data) throws Exception{
-		FileInputStream keyIn = new FileInputStream("/app/./src/main/java/com/encryptandupload/keys/TestKey.asc");
+	FileInputStream keyIn = new FileInputStream("/app/./src/main/java/com/encryptandupload/keys/DanTest.asc");
         FileOutputStream out = new FileOutputStream("/app/./src/main/java/com/encryptandupload/greatFile.pgp"); 
         System.out.println("Body Base64Decode byte[] ==> "+data);
         PGPPublicKey pubKey = PGPUtils.readPublicKey(keyIn);
