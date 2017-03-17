@@ -6,6 +6,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +43,14 @@ public class UploadFile {
 	public void upload(){
 		System.out.println("attempting upload...");
 		try{
+			// sets static ip addresses 
+			URL fixie = new URL(System.getenv("FIXIE_SOCKS_HOST"));
+			String[] fixieUserInfo = fixie.getUserInfo().split(":");
+			String fixieUser = fixieUserInfo[0];
+			String fixiePassword = fixieUserInfo[1];
+			System.setProperty("socksProxyHost", fixie.getHost());
+			Authenticator.setDefault(new ProxyAuthenticator(fixieUser, fixiePassword));
+			
 			GenericFTPClient sftp = new GenericFTPClient();
 			System.out.println(sftp);
 			sftp.connect(params.get("ftphost"), params.get("ftpuser"), params.get("ftppass"), 22);
@@ -87,6 +98,18 @@ public class UploadFile {
                 .build();
 
        return httpclient;
+	}
+	
+	private class ProxyAuthenticator extends Authenticator {
+	  private final PasswordAuthentication passwordAuthentication;
+	  private ProxyAuthenticator(String user, String password) {
+	    passwordAuthentication = new PasswordAuthentication(user, password.toCharArray());
+	  }
+
+	  @Override
+	  protected PasswordAuthentication getPasswordAuthentication() {
+	    return passwordAuthentication;
+	  }
 	}
 	
 	public byte[] readFile(File file) throws IOException{
