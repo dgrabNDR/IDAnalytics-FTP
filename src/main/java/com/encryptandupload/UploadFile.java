@@ -45,7 +45,7 @@ public class UploadFile {
 		try{
 			// sets static ip addresses 
 			System.out.println("setting up fixie...");
-			String fsh = System.getenv("FIXIE_SOCKS_HOST");
+			String fsh = System.getenv("FIXIE_URL");
 			System.out.println("FIXIE_SOCKS_HOST ==> "+fsh);
 			URL fixie = new URL(fsh);
 			String fixieInfo = fixie.getUserInfo();
