@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -44,15 +45,16 @@ public class EncryptAndUpload extends HttpServlet{
 		parameters = (HashMap<String,String>) gson.fromJson(paramStr, params.getClass());
 		parameters.putAll(CredentialManager.getLogin());
 		this.params = parameters;
-		System.out.println("Params ==>"+gson.toJson(params));	
+		System.out.println("parsing request body parameters...");	
 		
 		// login to salesforce and pull attachment
 		sc = new SalesforceConnector(params.get("Username"),params.get("Password"),params.get("environment"));
 		ArrayList<SObject> attachments = new ArrayList<SObject>();		
-		try {			
+		try {	
+			System.out.println("logging into salesforce...");
 			sc.login();
 			attachments = query(params.get("attId"));
-			System.out.println("got attachments ==> "+attachments.size());	
+			System.out.println("queried "+attachments.size()+" attachments");	
 		} catch (ConnectionException e1) {
 			e1.printStackTrace();
 		}
@@ -75,6 +77,7 @@ public class EncryptAndUpload extends HttpServlet{
 		}
 		
 		// add attachment to report in salesforce
+		System.out.println("adding salesforce attachment...");
 		try {
 			sc.create(encryptedSObjs);
 		} catch (ConnectionException e) {
@@ -82,15 +85,12 @@ public class EncryptAndUpload extends HttpServlet{
 		}
 
 		// upload files to ida ftp		
-		System.out.println(InetAddress.getLocalHost());
 		UploadFile uf = new UploadFile();
 		uf.start(params, encryptedFiles);
 		try{
 			uf.upload();
-		} catch (Exception e){
-			System.out.println(e);
 		} finally {
-			System.out.println("did it work? "+uf.res);
+			System.out.println("did it work? "+uf.res == null);
 		}
 	}
 	
@@ -130,6 +130,7 @@ public class EncryptAndUpload extends HttpServlet{
 	}
 	
 	private ArrayList<SObject> query(String ids) throws ConnectionException{
+		System.out.println("querying salesforce...");
 		String idFilter;
 		if(ids.contains(",")){
 			String[] idParts = ids.split(",");
@@ -145,8 +146,6 @@ public class EncryptAndUpload extends HttpServlet{
 		} else {
 			idFilter = " Id = '"+ids+"'";
 		}
-		System.out.println("idFilter: "+ idFilter);
-
 		String soql = "SELECT Id, Name, ParentId, Body FROM Attachment WHERE "+idFilter;
 		return sc.query(soql);
 	}

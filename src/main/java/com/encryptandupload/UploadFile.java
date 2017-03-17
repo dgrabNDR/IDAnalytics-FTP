@@ -35,22 +35,25 @@ public class UploadFile {
 
 	
 	public void start(Map<String,String> p, ArrayList<File> files){
-		System.out.println("setting up uploader...");
+		System.out.println("starting uploader...");
 		params = p;
 		lstAtt = files;
 	}
 	
 	public void upload(){
-		System.out.println("attempting upload...");
+		
 		try{
 			// sets static ip addresses 
+			System.out.println("setting up fixie...");
 			URL fixie = new URL(System.getenv("FIXIE_SOCKS_HOST"));
 			String[] fixieUserInfo = fixie.getUserInfo().split(":");
 			String fixieUser = fixieUserInfo[0];
 			String fixiePassword = fixieUserInfo[1];
+			System.out.println("fixie u: "+fixieUser+" ,p: "+fixiePassword);
 			System.setProperty("socksProxyHost", fixie.getHost());
 			Authenticator.setDefault(new ProxyAuthenticator(fixieUser, fixiePassword));
 			
+			System.out.println("setting up GenericFTPClient...");
 			GenericFTPClient sftp = new GenericFTPClient();
 			System.out.println(sftp);
 			sftp.connect(params.get("ftphost"), params.get("ftpuser"), params.get("ftppass"), 22);
