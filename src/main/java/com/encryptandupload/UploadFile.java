@@ -60,8 +60,8 @@ public class UploadFile {
 			System.setProperty("socksProxyHost", fixie.getHost());
 			Authenticator.setDefault(new ProxyAuthenticator(fixieUser, fixiePassword));
 			
-			ip = InetAddress.getLocalHost();
-			System.out.println("Fixie IP Address => "+ip.getHostAddress());
+			//ip = InetAddress.getLocalHost();
+			//System.out.println("Fixie IP Address => "+ip.getHostAddress());
 			
 			System.out.println("setting up GenericFTPClient...");
 			GenericFTPClient sftp = new GenericFTPClient();
@@ -70,13 +70,10 @@ public class UploadFile {
 			System.out.println("Change folder status:"+sftp.changeDir(params.get("ftpfolder")));
 
 			File att = lstAtt.get(0);
-			byte[] fileBytes = readFile(att);
-		      
-			InputStream is1 = new ByteArrayInputStream(fileBytes);
-			CloseableHttpClient httpclient = getClient();
+			byte[] fileBytes = readFile(att);		      
+			InputStream is1 = new ByteArrayInputStream(fileBytes);		
 			
 			res = sftp.uploadFile(is1, (String) att.getName());
-
 			if(res){
 				System.out.println("upload successful");
 			}
@@ -87,30 +84,6 @@ public class UploadFile {
 		catch(Exception ex){
 			ex.printStackTrace();
 		}
-	}
-	
-	public CloseableHttpClient getClient(){
-		String fixieUrl = System.getenv("FIXIE_URL");
-
-        String[] fixieValues = fixieUrl.split("[/(:\\/@)/]+");
-        String fixieUser = fixieValues[1];
-        String fixiePassword = fixieValues[2];
-        String fixieHost = fixieValues[3];
-        int fixiePort = Integer.parseInt(fixieValues[4]);
-
-        CredentialsProvider credsProvider = new BasicCredentialsProvider();
-        credsProvider.setCredentials(
-                new AuthScope(fixieHost, fixiePort),
-                new UsernamePasswordCredentials(fixieUser, fixiePassword));
-        CloseableHttpClient httpclient = HttpClients.custom()
-                .setDefaultCredentialsProvider(credsProvider).build();
-
-            HttpHost proxy = new HttpHost(fixieHost, fixiePort);
-            RequestConfig config = RequestConfig.custom()
-                .setProxy(proxy)
-                .build();
-
-       return httpclient;
 	}
 	
 	private class ProxyAuthenticator extends Authenticator {
