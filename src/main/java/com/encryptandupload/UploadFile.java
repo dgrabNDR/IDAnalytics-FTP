@@ -44,7 +44,8 @@ public class UploadFile {
 		
 		try{
 			// sets static ip addresses 
-			System.out.println("Normal IP Address => "+InetAddress.getLocalHost());
+			InetAddress ip = InetAddress.getLocalHost();
+			System.out.println("Normal IP Address => "+ip.getHostAddress());
 			System.out.println("setting up fixie...");
 			String fsh = System.getenv("FIXIE_URL");
 			System.out.println("FIXIE_SOCKS_HOST ==> "+fsh);
@@ -57,7 +58,9 @@ public class UploadFile {
 			System.out.println("fixie u: "+fixieUser+" ,p: "+fixiePassword);
 			System.setProperty("socksProxyHost", fixie.getHost());
 			Authenticator.setDefault(new ProxyAuthenticator(fixieUser, fixiePassword));
-			System.out.println("Fixie IP Address => "+InetAddress.getLocalHost());
+			
+			ip = InetAddress.getLocalHost();
+			System.out.println("Fixie IP Address => "+ip.getHostAddress());
 			
 			System.out.println("setting up GenericFTPClient...");
 			GenericFTPClient sftp = new GenericFTPClient();
