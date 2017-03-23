@@ -48,9 +48,7 @@ public class UploadFile {
 			InetAddress ip = InetAddress.getLocalHost();
 			System.out.println("Normal IP Address => "+ip.getHostAddress());
 			System.out.println("setting up fixie...");
-			String fsh = System.getenv("FIXIE_SOCKS_HOST");
-			System.out.println("FIXIE_SOCKS_HOST ==> "+fsh);
-			URL fixie = new URL("http://"+fsh);
+			URL fixie = new URL("http://"+System.getenv("FIXIE_SOCKS_HOST"));
 			String fixieInfo = fixie.getUserInfo();
 			System.out.println("fixieURL ==> "+fixieInfo);
 			String[] fixieUserInfo = fixieInfo.split(":");
