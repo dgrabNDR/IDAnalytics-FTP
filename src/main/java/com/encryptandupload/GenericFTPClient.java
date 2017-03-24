@@ -53,7 +53,10 @@ public class GenericFTPClient {
 	
 	public boolean connect(String host, String login, String password, int port) throws SocketException, IOException{
 		System.out.println("host: "+host+"login: "+login+"pass: "+password+"port: "+port);
-		ftp.connect(host,21);
+		ftp.connect(host, port);
+		showServerReply(ftp);
+		ftp.login(login, password);
+		showServerReply(ftp);
 		int reply = ftp.getReplyCode();
 		Boolean res = FTPReply.isPositiveCompletion(reply) && ftp.login(login, password);
 		if(res){
@@ -64,6 +67,15 @@ public class GenericFTPClient {
             // Enter local passive mode
 		}
 		return res;
+	}
+	
+	public static void showServerReply(FTPClient ftpClient) {
+		String[] replies = ftpClient.getReplyStrings();
+		if (replies != null && replies.length > 0) {
+		    for (String aReply : replies) {
+			System.out.println("SERVER: " + aReply);
+		    }
+		}
 	}
 	
 	public boolean changeDir(String remotePath) throws Exception {
