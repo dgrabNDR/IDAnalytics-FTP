@@ -14,6 +14,7 @@ import java.security.cert.CertificateException;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
+import org.apache.commons.net.ftp.FTPClient;
 
 public class GenericFTPClient {
 	
