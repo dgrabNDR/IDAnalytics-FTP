@@ -70,9 +70,14 @@ public class EncryptAndUpload extends HttpServlet{
 				EncryptFile ef = new EncryptFile();
 				File suchEncrypt = ef.encrypt(base64ToByte((String)so.getField("Body")),(String)so.getField("Name"));							
 				encryptedSObjs.add(fileToSObj((String)so.getField("ParentId"),(String)so.getField("Name")+".pgp",suchEncrypt));
-				suchEncrypt.renameTo(new File((String)so.getField("Name")+".pgp"));
-				System.out.println(suchEncrypt.getName());
-				encryptedFiles.add(suchEncrypt);
+				File newFile = new File("/app/./src/main/java/com/encryptandupload/"+(String)so.getField("Name")+".pgp");
+				if(newFile.createNewFile()) {
+		        	FileOutputStream fos = new FileOutputStream(newFile);
+		        }
+				if(suchEncrypt.renameTo(newFile)){
+					System.out.println(suchEncrypt.getName());
+					encryptedFiles.add(suchEncrypt);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}	
