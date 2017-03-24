@@ -122,7 +122,11 @@ public class UploadFile {
 	            Channel channel = session.openChannel("sftp");
 	            channel.connect();
 	            ChannelSftp sftpChannel = (ChannelSftp) channel;
-	            sftpChannel.get("remotefile.txt", "localfile.txt");
+	            for(File f : lstAtt){	            	
+	            	sftpChannel.put(new FileInputStream(f), f.getName());
+	            }
+	            
+	            //sftpChannel.get("remotefile.txt", "localfile.txt");
 	            sftpChannel.exit();
 	            session.disconnect();
 	        } catch (JSchException e) {
