@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.net.ftp.FTPClient;
@@ -28,6 +29,12 @@ import org.apache.http.impl.client.HttpClients;
 
 import main.java.com.salesforce.SalesforceConnector;
 
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
 import com.sforce.soap.partner.sobject.SObject;
 import com.sforce.ws.ConnectionException;
 
@@ -80,7 +87,7 @@ public class UploadFile {
 			System.out.println(res);
 
 			sftp.logout();
-			*/
+			
 			FTPClient ftpClient = new FTPClient();
 	        try {
 	            ftpClient.connect(params.get("ftphost"));
@@ -101,9 +108,29 @@ public class UploadFile {
 	        } catch (IOException ex) {
 	            System.out.println("Oops! Something wrong happened");
 	            ex.printStackTrace();
+	        }*/
+			JSch jsch = new JSch();
+	        Session session = null;
+	        try {
+	            session = jsch.getSession(params.get("ftpuser"), params.get("ftphost"), 22);
+	            Properties prop = new Properties();
+	            prop.setProperty("StrictHostKeyChecking", "no");
+	            session.setConfig(prop);
+	            session.setPassword(params.get("ftppass"));
+	            session.connect();
+
+	            Channel channel = session.openChannel("sftp");
+	            channel.connect();
+	            ChannelSftp sftpChannel = (ChannelSftp) channel;
+	            sftpChannel.get("remotefile.txt", "localfile.txt");
+	            sftpChannel.exit();
+	            session.disconnect();
+	        } catch (JSchException e) {
+	            e.printStackTrace();  
+	        } catch (SftpException e) {
+	            e.printStackTrace();
 	        }
-		}
-		catch(Exception ex){
+		} catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
