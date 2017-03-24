@@ -75,10 +75,10 @@ public class EncryptAndUpload extends HttpServlet{
 		        	FileOutputStream fos = new FileOutputStream(newFile);
 		        }
 				if(suchEncrypt.renameTo(newFile)){
-					System.out.println("suchEncrypt: "+suchEncrypt.getName());
-					System.out.println("newFile: "+newFile.getName());
+					//System.out.println("suchEncrypt: "+suchEncrypt.getName());
+					//System.out.println("newFile: "+newFile.getName());
 					encryptedFiles.add(newFile);
-					encryptedFiles.add(suchEncrypt);
+					//encryptedFiles.add(suchEncrypt);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
