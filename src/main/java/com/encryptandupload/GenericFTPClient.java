@@ -53,7 +53,7 @@ public class GenericFTPClient {
 	
 	public boolean connect(String host, String login, String password, int port) throws SocketException, IOException{
 		System.out.println("host: "+host+"login: "+login+"pass: "+password+"port: "+port);
-		ftp.connect(host,22);
+		ftp.connect(host,21);
 		int reply = ftp.getReplyCode();
 		Boolean res = FTPReply.isPositiveCompletion(reply) && ftp.login(login, password);
 		if(res){
