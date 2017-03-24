@@ -78,10 +78,12 @@ public class UploadFile {
 
 	            Channel channel = session.openChannel("sftp");
 	            channel.connect();
+	            System.out.println("connected!");
 	            ChannelSftp sftpChannel = (ChannelSftp) channel;
 	            sftpChannel.cd("input/");
 	            System.out.println("pwd: "+sftpChannel.pwd());
-	            for(File f : lstAtt){	            	
+	            for(File f : lstAtt){
+	            	System.out.println("uploading file: "+f.getName());
 	            	sftpChannel.put(new FileInputStream(f), f.getName());
 	            }
 	            

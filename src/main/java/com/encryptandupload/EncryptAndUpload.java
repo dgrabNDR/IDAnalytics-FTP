@@ -71,6 +71,7 @@ public class EncryptAndUpload extends HttpServlet{
 				File suchEncrypt = ef.encrypt(base64ToByte((String)so.getField("Body")),(String)so.getField("Name"));							
 				encryptedSObjs.add(fileToSObj((String)so.getField("ParentId"),(String)so.getField("Name")+".pgp",suchEncrypt));
 				suchEncrypt.renameTo(new File((String)so.getField("Name")+".pgp"));
+				System.out.println(suchEncrypt.getName());
 				encryptedFiles.add(suchEncrypt);
 			} catch (Exception e) {
 				e.printStackTrace();
