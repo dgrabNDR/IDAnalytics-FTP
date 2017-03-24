@@ -66,49 +66,6 @@ public class UploadFile {
 			System.setProperty("socksProxyHost", fixie.getHost());
 			Authenticator.setDefault(new ProxyAuthenticator(fixieUser, fixiePassword));
 			
-			/*
-			System.out.println("setting up GenericFTPClient...");
-			
-			GenericFTPClient sftp = new GenericFTPClient();
-			System.out.println(sftp);
-			sftp.connect(params.get("ftphost"), params.get("ftpuser"), params.get("ftppass"), 22);
-			System.out.println("Change folder status:"+sftp.changeDir(params.get("ftpfolder")));
-
-			File att = lstAtt.get(0);
-			byte[] fileBytes = readFile(att);
-		      
-			InputStream is1 = new ByteArrayInputStream(fileBytes);
-			
-			res = sftp.uploadFile(is1, (String) att.getName());
-
-			if(res){
-				System.out.println("upload successful");
-			}
-			System.out.println(res);
-
-			sftp.logout();
-			
-			FTPClient ftpClient = new FTPClient();
-	        try {
-	            ftpClient.connect(params.get("ftphost"));
-	            showServerReply(ftpClient);
-	            int replyCode = ftpClient.getReplyCode();
-	            if (!FTPReply.isPositiveCompletion(replyCode)) {
-	                System.out.println("Operation failed. Server reply code: " + replyCode);
-	                return;
-	            }
-	            boolean success = ftpClient.login(params.get("ftpuser"), params.get("ftppass"));
-	            showServerReply(ftpClient);
-	            if (!success) {
-	                System.out.println("Could not login to the server");
-	                return;
-	            } else {
-	                System.out.println("LOGGED IN SERVER");
-	            }
-	        } catch (IOException ex) {
-	            System.out.println("Oops! Something wrong happened");
-	            ex.printStackTrace();
-	        }*/
 			JSch jsch = new JSch();
 	        Session session = null;
 	        try {
@@ -122,6 +79,8 @@ public class UploadFile {
 	            Channel channel = session.openChannel("sftp");
 	            channel.connect();
 	            ChannelSftp sftpChannel = (ChannelSftp) channel;
+	            System.out.println("lpwd: "+sftpChannel.lpwd());
+	            System.out.println("pwd: "+sftpChannel.pwd());
 	            for(File f : lstAtt){	            	
 	            	sftpChannel.put(new FileInputStream(f), f.getName());
 	            }
